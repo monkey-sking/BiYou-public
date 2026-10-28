@@ -1,0 +1,113 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Project specific
+config/config.yaml
+config/cookies.json
+config/youtube_cookies.txt
+# YouTube 登录凭据（2026-10-20 加入：仓库根目录的会话 cookie，勿提交）
+yt_cookies.txt
+yt_cookies.json
+history/
+logs/
+video_metadata.json
+project_history_record.txt
+automation/data/
+
+# Media Files
+videos/
+subtitles/
+*.mp4
+*.mkv
+*.wav
+*.mp3
+*.webm
+*.jpg
+*.png
+*.webp
+*.json
+*.vtt
+!package.json
+!**/config/*.example.yaml
+!**/config/*.example.json
+# 资源总表配置是本机运行信息，不随源码公开。
+
+# SQLite WAL 临时文件
+*.db-shm
+*.db-wal
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Build Artifacts
+build/
+dist/
+release_package/
+*.spec
+
+GPT-SoVITS/
+whisperx_temp/
+.last_url
+bilibili_data_*
+
+# Debug artifacts
+*.log
+raw_parts*.txt
+possible_urls.txt
+
+# Runtime cache
+core/utils/.video_integrity_cache.json
+
+# Browser profile
+.gemini-browser-data/
+.biyou-browser-data/
+.biyou-workflow-browser-data/
+
+# Local runtime artifacts
+/.playwright-cli/
+/one-api.db
+/output/
+/tmp/
+/output_player_check.png
+/lobster-*-implementation/
+
+# Runtime tracking/checkin artifacts (2026-09-01)
+biyou_tracker.db
+config/config.yaml.bak_*
+data/cover_provider_history.jsonl.bak
+data/tongyi_checkin_date.txt
+*.bak-*
+*.bak_*
+
+# Public history guard (2026-10-28)
+config/publishing_automation.yaml
+config/context.json
+config/resource_doc.json
+cookies.json
+yt_cookies.txt
+config/youtube_cookies.txt
+config/youtube_cookies.txt.bak
+core/utils/cookie.py.backup
+core/data/
+data/
+history/
+logs/
+analytics/
+flagged_for_review.txt
+history_ids.txt
+notified_failures.txt
+pending_result_notifications.txt
+*.db
+*.sqlite
+*.sqlite3
+*.pem
+*.p12
+*.p8
+.env
+.env.*

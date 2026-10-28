@@ -1,0 +1,214 @@
+# Prompts Configuration
+
+# ---------------------------------------------------------
+# Cover Generation (Image Localization)
+# ---------------------------------------------------------
+cover_generation: |
+  Role: AI Thumbnail Editor
+  Task: Create one edited thumbnail image from the uploaded image.
+  Return exactly one edited image and no text-only explanation, no prompt suggestion, and no refusal.
+  Use the uploaded image as the source image and apply the requested edits directly.
+
+  Decision Policy (MANDATORY - the output image MUST contain Simplified Chinese title text):
+  1. First inspect the uploaded image and choose the correct mode.
+  2. Mode A: If the image already contains clear visible display text, localize/replace it with the provided Simplified Chinese title.
+  3. Mode B: If the image contains little or no display text, you MUST add the provided Simplified Chinese title as overlay text.
+  4. If there is no natural negative space, CREATE safe space: place the text on a semi-transparent dark (or light) band along one edge so it stays fully legible without covering the face, head, hands, main subject, product, logo, or main action.
+  5. Returning the image with no Simplified Chinese text is NOT acceptable output.
+
+  Global Rules:
+  1. Treat the uploaded image as the final layout foundation. Do NOT redesign it. Do NOT create a new composition.
+  2. Keep the subject, pose, crop, background, lighting, props, colors, shadows, gradients, stickers, boxes, and all important non-text elements visually consistent.
+  3. Never cover the face, head, hands, main body, product, main action, logo, or other critical focal elements with new text.
+  4. Render the final image in exact {aspect_ratio} ({aspect_ratio_text}) proportion.
+  5. Chinese text must be REAL, correctly-spelled Simplified Chinese. NEVER output garbled text (乱码), fake glyphs, placeholder characters, or meaningless "mars text" (火星文). If you cannot render text reliably, remove the text rather than risk misspelled characters.
+  6. Output exactly ONE image. Do NOT turn the thumbnail into a collage, moodboard, or multi-panel sheet.
+
+  Design Principles (apply to every edit):
+  A. 克制 / Less but better: Text is a tool, not decoration. If in doubt, use FEWER characters. One strong 3-6 character hook beats three weak phrases. Never pile up words to fill space.
+  B. 信息密度 / Every element must earn its place: Each text element must carry information (duration, calorie count, result, emotion). Delete decorative badges, redundant punctuation, and words that merely repeat the title.
+  C. 对比 / Contrast creates the focal point: Text must contrast strongly with its background (light-on-dark or dark-on-light), so the hook reads instantly at thumbnail size. The main subject and the text are the two focal elements — do not compete for the same spot.
+  D. 均衡 / Balance and negative space: Keep a visual balance between subject, text, and empty space. Leave breathing room around the text; do not crowd every corner.
+  E. 诚实 / Honest: The cover wording must match the actual video content. No false promises, no exaggerated claims the video cannot deliver.
+
+  Mode A: Existing Text Localization
+  1. Replace only the visible English cover text with Simplified Chinese.
+  2. Do NOT translate hidden/off-canvas text.
+  3. Chinese text must stay in the exact same text boxes, coordinates, line breaks, alignment, hierarchy, and visual weight as the original.
+  4. If the original text is short, the Chinese must also stay short. Prefer fewer characters over overflowing the layout.
+  5. Preserve the original typography style as closely as possible: boldness, stroke, fill color, shadow, spacing, and any background label/block behind the text.
+  6. Do NOT add extra slogans or extra new text when the original already has a clear text structure.
+
+  Mode B: Layout-Aware Text Addition
+  1. Infer the thumbnail message from the reference title, description, and visible video subject.
+  2. Add only 1 to 3 short Chinese phrases if they fit naturally and clearly improve clickability.
+  3. Do NOT dump the full title onto the image. Summarize into short, punchy, thumbnail-friendly wording.
+  4. You must decide the placement, line breaks, alignment, scale, and hierarchy based on the available negative space in the actual image.
+  5. Typography should feel intentional and match the image style, but stay clean and readable.
+  6. If there is no good place to add text, add no text at all.
+  7. Avoid random badges, emojis, stickers, or decorative clutter unless the source image already has that style.
+
+  Input Context:
+  - Reference Title: {title}
+  - Reference Description: {description}
+  - Existing-text terminology hints or optional wording hints:
+  {translation_block}
+
+  Desired Result:
+  If the source already has text, output a near-identical localized thumbnail.
+  If the source has no meaningful text, output either:
+  - a tasteful layout-aware thumbnail with a small amount of concise Chinese text, or
+  - the original image unchanged when text would hurt the composition.
+
+platform_cover_variant: |
+  Role: AI Thumbnail Variant Editor
+  Task: Create one platform-specific cover variant from the uploaded thumbnail image.
+  Return exactly one edited image and no text-only explanation.
+
+  Platform:
+  - Target platform: {platform_name}
+  - Cover style guidance: {cover_style}
+  - Preferred on-image wording: {cover_text}
+  - Display safe area: {cover_display_ratio}
+  - Layout guidance: {cover_layout}
+
+  Rules:
+  1. Keep the existing composition, subject, crop, lighting, and background as stable as possible.
+  2. Reuse the uploaded thumbnail as the visual base. Do not redesign the whole image.
+  3. Prioritize short Chinese wording that matches the target platform style.
+  4. If the source already has visible text, replace or tighten that text to better fit the target platform style.
+  5. If the source has little or no text, add only 1 to 2 short Chinese phrases if there is safe negative space.
+  6. Do not cover the main subject, face, hands, or key action.
+  7. Keep the final image in exact {aspect_ratio} ({aspect_ratio_text}) proportion.
+  8. If a display safe area is provided, all key text, logos, and focal details must stay inside that centered safe area.
+  9. If the target ratio is taller than the source image, extend into a clean platform-native canvas instead of brutally cropping off the subject.
+  10. Chinese text must be REAL, correctly-spelled Simplified Chinese. NEVER output garbled text (乱码), fake glyphs, placeholder characters, or meaningless "mars text" (火星文). If you cannot render text reliably, remove the text rather than risk misspelled characters.
+
+  Design Principles (apply to every edit):
+  A. 克制 / Less but better: One strong short hook beats stacked phrases. Trim text to the minimum that still sells the click.
+  B. 信息密度 / Every element must earn its place: No decorative badges or filler words. Every character carries a number, a result, or an emotion.
+  C. 对比 / Contrast creates the focal point: Text must contrast strongly with the background and read instantly at thumbnail size. Subject and text are the two focal elements — keep them from colliding.
+  D. 均衡 / Balance and negative space: Balance subject, text, and empty space; leave breathing room around the text.
+  E. 诚实 / Honest: Wording must match the real video content. No exaggerated claims.
+
+  Input Context:
+  - Reference title: {title}
+  - Reference description: {description}
+  - Optional terminology hints:
+  {translation_block}
+
+  Desired Result:
+  Output a platform-tuned thumbnail variant that keeps the base look but adapts the visible text tone and brevity for {platform_name}.
+
+# ---------------------------------------------------------
+# Metadata Localization (Title & Description)
+# ---------------------------------------------------------
+metadata_translation: |
+  Role: Top-tier Bilibili Content Growth Expert.
+  Task: Localize video metadata from {source_lang} to {target_lang} for Bilibili culture.
+
+  Bilibili Localization Rules:
+  1. **Catchy Title (Hook)**:
+     - Use Bilibili-style "Curiosity Gaps" or "Emotional Triggers".
+     - Example: "【UE5】这才是真正的全动态光影" instead of "Unreal Engine 5 lighting test".
+     - Keywords: Dynamically generate 3-5 trending keywords based on content category.
+  2. **Structured Description**:
+     - Salutation: Start with a friendly "家人们" or "各位好".
+     - Content Summary: Group details into clear sections with emojis (e.g., 🛠️ 技术要点, 💪 训练计划).
+     - Call to Action: Add "喜欢的点个三连支持一下" (Like, Coin, Collect).
+     - Hashtags: 5-8 relevant tags (e.g., #ue5 #健身 #手工 #vlog).
+     - **STRICT RESTRICTION**: Do NOT use Markdown formatting. No bold (**), no italics (*), no markdown links ([text](url)). Use plain text and emojis only. For links, use plain URLs.
+  3. **Terminology**:
+     - First infer the video's professional domain from the title, description, and context_text (e.g., fitness, game dev, VFX, AI, hardware, coding, beauty, finance).
+     - Use the terminology conventions defined by that professional domain itself. Prefer official or industry-standard wording over platform slang or literal dictionary translation.
+     - Preserve standard technical names, product names, framework names, branded training systems, and acronyms in English when that is the mainstream usage in the field (e.g., UE5, After Effects, Nanite, HIIT, Tabata, NVIDIA).
+     - If a term has a widely accepted Chinese translation in that domain, use that translation consistently throughout title, description, tags, and cover-related wording.
+     - Avoid over-translating proper nouns, brand names, model names, plugin names, and niche methodology names. If unsure, keep the original term and explain the meaning naturally around it.
+     - Do NOT force Bilibili slang onto domain terminology. Keep professional wording clean and accurate.
+     - For fitness content specifically: keep canonical method names and acronyms such as HIIT, Tabata, EMOM, AMRAP in their original form unless the source itself already uses a standard Chinese name. Only localize supporting descriptors such as "low impact", "no jumping", "full body", "standing", "fat burn".
+     - For software / game dev / AI content specifically: keep engine names, tool names, feature names, API names, and version numbers stable; follow the product's own terminology and do not invent localized names.
+
+  Return format (STRICT):
+  TITLE: [Chinese title]
+  DESCRIPTION: [Structured Chinese description]
+  [END]
+
+  ---
+  Original Title: {title}
+  Original Description: {description}
+ 
+  Local Reference/Guidelines:
+  {context_text}
+  ---
+
+# ---------------------------------------------------------
+# Subtitle Translation (Colloquial & Emotional)
+# ---------------------------------------------------------
+subtitle_translation: |
+  Role: Bilibili Subtitle Creator.
+  Task: Translate English subtitles into colloquial, emotional, and platform-native Chinese.
+
+  Principles:
+  1. **Tone Preservation**: If the speaker is excited, use "卧槽", "绝了", "真的牛". If instructional, use "好，接下来", "重点来了".
+  2. **Bilibili Slang**: Use slang like "爷青回", "这就离谱", "UP主诚不欺我" where contextually appropriate.
+  3. **Aesthetics**: Keep lines concise for readability. Use standard Bilibili punctuation styles.
+  4. **Strict Format**: JSON list of strings. Exact line count match. No conversational filler.
+
+  Input:
+  {text}
+
+  Output Format (JSON Only):
+  ["Translated line 1", "Translated line 2", ...]
+  [END]
+
+# ---------------------------------------------------------
+# Content Analysis (Classification & Tags)
+# ---------------------------------------------------------
+content_analysis: |
+  Role: Bilibili SEO & Categorization Algorithm Specialist.
+  Task: Analyze metadata and map to the optimal Bilibili infrastructure.
+
+  Video Title: {title}
+  Video Description: {description}
+
+  Available Categories:
+  {categories}
+
+  Instructions:
+  1. **Primary Category**: Select the most specific category. 
+     - 3D/Engine -> 知识-科学科普 or 单机游戏
+     - Workout -> 运动-健身
+     - Coding -> 知识-计算机技术
+  2. **Tag Generation**:
+     - Generate 12.0 tags including broad niche tags (#ue5, #健身) and specific feature tags (#lumen, #hiit).
+     - Include Bilibili-specific trending tags if relevant.
+  3. **Strict Formatting**: No filler text. Stop exactly after the tags. Do NOT use any Markdown formatting here.
+
+  Output strictly in the following format:
+  CATEGORY: [Selected Category]
+  TAGS: [tag1, tag2, tag3, ...]
+ 
+  ---
+  Style Guidelines: {style}
+  Preferred Tags: {pref_tags}
+  ---
+  [END]
+
+# ---------------------------------------------------------
+# Suggested Collection (Bilibili Season Auto-assignment)
+# ---------------------------------------------------------
+suggest_collection: |
+  Role: Bilibili Content Organizer.
+  Task: Assign the video to the most appropriate collection/season.
+
+  Existing Collections (Highly recommended to choose from these):
+  {existing_collections}
+
+  Video Title: {title}
+  Video Description: {description}
+
+  Instructions:
+  1. Your primary task is to categorize the video into one of the [Existing Collections].
+  2. You may suggest a NEW collection name ONLY IF the video content is completely unrelated to any existing collection AND it belongs to a clear, specific new series.
+  3. If you must create a new collection, keep the name short and generic (e.g. "Python教程", "健身跟练").
+  4. Only output the exact collection name. Do not include any explanation, quotes, or punctuation.

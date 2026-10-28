@@ -1,0 +1,263 @@
+# ============================================
+# BiYou Configuration (Example)
+# ============================================
+
+# Language: 'zh' (Chinese) or 'en' (English)
+language: zh
+
+# Console log verbosity:
+# false = concise user-facing logs (recommended)
+# true  = verbose technical logs (debugging)
+verbose_console_logs: false
+
+# Watermark removal strategy:
+# hybrid       = reverse alpha first, local inpaint fallback (recommended)
+# reverse_alpha= mathematical reverse alpha blending only
+# local_rules  = local CV/inpaint only
+watermark_service: hybrid
+
+# Default browser for cookies (chrome, edge, firefox)
+browser: chrome
+
+# Dedicated workflow-only browser profile used for cookies and automation.
+# Recommended name: ~/Library/Application Support/Citro Labs/ego lite (ego)
+browser_profile: ~/Library/Application Support/Citro Labs/ego lite
+
+# Remote debugging port shared by browser automation flows.
+browser_debug_port: 39222
+
+# Paths
+video_source_dir: "./videos"
+cover_dir: "./videos"
+metadata_file: video_metadata.json
+prompts_file: "config/prompts.yaml"
+cookie_file: cookies.json
+
+# ============================================
+# Services Configuration (Granular Control)
+# ============================================
+services:
+  # Text Translation Tasks (Title, Description, Subtitles)
+  translation:
+    provider: gemini_official  # Options: gemini_official, gemini_web
+    model: gemini-2.5-pro
+
+  # Image Generation Tasks (Cover)
+  cover:
+    provider: gemini_web       # Options: gemini_web (Recommended for image editing), gemini_official
+    model: Thinking            # Shared aliases: Flash=快速, Thinking=思考, Pro=网页Pro(当前显示 3.1 Pro)
+    use_browser: false         # false = Web API first, true = Browser first
+    web_timeout_seconds: 15    # Web API image timeout before falling back to browser
+    allow_screenshot_fallback: false  # true = allow Gemini DOM screenshot as a last resort if image download fails
+
+  # Content Analysis Tasks (Tags, Category)
+  analysis:
+    provider: gemini_official
+    model: gemini-2.5-flash
+
+# ============================================
+# Providers Details
+# ============================================
+providers:
+  gemini_official:
+    # Get API Key: https://aistudio.google.com/
+    api_key: ""
+    
+  gemini_web:
+    # Uses browser cookies
+    browser: chrome
+
+# Resource-link extraction uses a DeepSeek chat model through the HF share/router endpoint.
+# The local deterministic URL classifier is used automatically if this endpoint fails.
+resource_link_extraction:
+  enabled: true
+  endpoint: "https://router.huggingface.co/v1/chat/completions"
+  model: "deepseek-v4"
+  api_key_file: "/tmp/.hf_key_2"
+  timeout: 25
+
+kb:
+  resource_links_db: "./data/resource_links.sqlite3"
+
+# ============================================
+# Video/Platform Settings
+# ============================================
+video_download_format: bestvideo+bestaudio/best
+
+category_map:
+  娱乐-综艺: 71
+  游戏-单机游戏: 17
+  生活-健身: 164
+  生活-日常: 21
+  知识-科学科普: 201
+
+default_title: 未命名视频
+default_description: 这是默认简介，请在 video_metadata.json 中修改。
+default_tags:
+  - 视频
+  - 分享
+
+# Copyright setting: 1 for Original (原创), 2 for Repost (转载)
+# You can also override this per video in video_metadata.json by adding a "copyright" field.
+bilibili_copyright: 1
+
+# Auto confirm all prompts: true (Batch mode), false (Interactive mode)
+auto_confirm: false
+
+# Auto Comment Settings
+# Only post comments if category contains any of these keywords
+auto_comment_keywords:
+  - "健身"
+  - "运动"
+  - "训练"
+  - "Fitness"
+  - "Workout"
+
+# Comment Hook (Sticky Comment)
+# The main content of the pinned comment
+comment_hook: |
+  感谢大家支持我的健身翻译频道！💪
+  如果你喜欢此类视频，请三连支持，后续会持续更新全球顶尖健身博主的训练计划。
+  有什么想看的博主也可以在评论区留言哦！✨
+
+# Comment Link (Appended as a reply to the main comment)
+comment_link: |
+  https://example.com/referral
+
+# Comment Rules (Optional, overrides the legacy fields above)
+# Each rule can decide when to comment based on keywords in title/description/tags/category.
+# Fields:
+# - name: optional label
+# - priority: lower runs first
+# - role: primary | reply | fallback_primary
+# - match_any: any keyword matches
+# - match_all: all keywords must match
+# - exclude_any: skip if any keyword matches
+# - hook: main comment text
+# - link: reply comment text
+comment_rules:
+  - name: fitness
+    priority: 10
+    role: primary
+    match_any: ["健身", "运动", "训练", "Fitness", "Workout"]
+    hook: |
+      感谢大家支持我的健身翻译频道！💪
+      如果你喜欢此类视频，请三连支持，后续会持续更新全球顶尖健身博主的训练计划。
+      有什么想看的博主也可以在评论区留言哦！✨
+    link: |
+      https://example.com/referral
+  - name: plugin
+    priority: 50
+    role: fallback_primary
+    match_any: ["插件", "plugin", "Fab", "fab.com", "Unreal", "UE", "UE4", "UE5", "蓝图", "Blueprint"]
+    hook: |
+      做了个 Unreal 蓝图小工具：按热键弹出输入框，直接用一行签名
+      创建变量/函数/事件/宏，参数和类型一次写完，少点一堆鼠标。
+      支持智能别名与参数推断，专治蓝图里重复的创建流程。欢迎试用、提建议～
+    link: |
+      下载/详情：https://fab.com/s/0a2dcdf7e179
+
+# Plugin Comment (Optional)
+# Will only post if title/description/tags/category match any keyword
+plugin_comment_keywords:
+  - "插件"
+  - "plugin"
+  - "Fab"
+  - "fab.com"
+  - "Unreal"
+  - "UE"
+  - "UE4"
+  - "UE5"
+  - "蓝图"
+  - "Blueprint"
+plugin_comment_hook: |
+  Quick Event Function Creator：Unreal 蓝图小工具，按热键弹输入框，
+  用一行签名就能创建变量/函数/事件/宏，参数与类型一次写完。
+  支持智能别名与类型/参数推断，减少蓝图里重复的创建流程。欢迎试用、提建议～
+plugin_comment_link: |
+  下载/详情：https://fab.com/s/0a2dcdf7e179
+
+# Proxy Setting
+# proxy: "http://127.0.0.1:7890"
+
+# ============================================
+# Channel Daily Publish
+# ============================================
+# Sync a fixed YouTube channel into a local backlog, then
+# schedule one item per day to Bilibili.
+channel_daily_publish:
+  channel_url: ""
+  publish_time: "19:05"
+  timezone: "Asia/Shanghai"
+  sync_window: 20
+  state_file: "history/channel_daily_publish.json"
+
+# ============================================
+# Workflow Signals (Agent / Notification Hooks)
+# ============================================
+# Write structured state for external agents such as Lobster.
+# Hooks receive:
+# - BIYOU_WORKFLOW_EVENT_JSON
+# - BIYOU_WORKFLOW_EVENT_TYPE
+# - BIYOU_WORKFLOW_RUN_ID
+# - BIYOU_WORKFLOW_STATUS_FILE
+workflow_signals:
+  enabled: true
+  state_dir: ./logs/workflow_status
+  events_file: ./logs/workflow_events.jsonl
+  agent_hook: ""   # Called on run_failed.
+  notify_hook: ""  # Called only when run_failed has recoverable=false.
+
+# ============================================
+# Publishing Adapters
+# ============================================
+publishing:
+  enabled: false
+  default_targets:
+    - bilibili
+  # Optional external locator file for automation adapters.
+  # Copy config/publishing_automation.example.yaml to this path and edit it.
+  automation_config_file: "config/publishing_automation.yaml"
+  managed_scheduler:
+    state_file: "history/publishing_jobs.json"
+  adapters:
+    bilibili:
+      enabled: true
+      mode: api
+    douyin:
+      enabled: false
+      # Supported modes:
+      # - automation: reuse the logged-in workflow browser profile
+      # - api: official access_token flow
+      mode: automation
+      # Optional inline override. If omitted, BiYou loads
+      # config/publishing_automation.yaml -> douyin.
+      automation: {}
+      # If using api mode instead:
+      # access_token: ""
+    kuaishou:
+      enabled: false
+      # Supported modes:
+      # - automation: reuse the logged-in workflow browser profile
+      # - api: official access_token + app_id flow
+      mode: automation
+      # Optional inline override. If omitted, BiYou loads
+      # config/publishing_automation.yaml -> kuaishou.
+      automation: {}
+      # If using api mode instead:
+      # access_token: ""
+      # app_id: ""
+    wechat_channels:
+      enabled: false
+      mode: automation
+      # Optional inline override. If omitted, BiYou loads
+      # config/publishing_automation.yaml -> wechat_channels.
+      automation: {}
+    xiaohongshu:
+      enabled: false
+      mode: automation
+      # Optional inline override. If omitted, BiYou loads
+      # config/publishing_automation.yaml -> xiaohongshu.
+      automation: {}
+
+user_agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36

@@ -1,0 +1,25 @@
+# Bilibili Video Upload Automation dependencies
+
+# Core Logic
+requests
+pyyaml
+numpy
+Pillow
+loguru
+psutil
+
+# Video Download
+yt-dlp
+
+# Bilibili Upload & Interaction
+biliup
+
+# Gemini API & Cookie Management
+gemini-webapi>=2.0.0
+browser-cookie3
+google-generativeai
+playwright
+
+# Media Processing
+opencv-python
+gemini-webapi==1.0.1

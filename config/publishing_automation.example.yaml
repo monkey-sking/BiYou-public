@@ -1,0 +1,245 @@
+# Copy this file to config/publishing_automation.yaml and edit selectors
+# to match your creator dashboard DOM.
+
+douyin:
+  publish_url: "https://creator.douyin.com/creator-micro/content/upload"
+  option_controls:
+    visibility:
+      kind: choice
+      activate:
+        - "button:has-text('谁可以看')"
+        - "div:has-text('谁可以看')"
+      options:
+        public:
+          - "div:text-is('所有人可见')"
+          - "label:has-text('所有人可见')"
+        friends:
+          - "div:text-is('好友可见')"
+          - "label:has-text('好友可见')"
+        private:
+          - "div:text-is('仅自己可见')"
+          - "label:has-text('仅自己可见')"
+          - "label:has-text('私密仅自己可见')"
+    allow_comment:
+      kind: boolean
+      selectors:
+        - "[role='switch'][aria-label*='评论']"
+        - "[role='switch'][aria-label*='允许评论']"
+      enabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='true']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='true']"
+      disabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='false']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='false']"
+  locators:
+    title:
+      - "input[placeholder*='标题']"
+      - "input[placeholder*='作品标题']"
+    description:
+      - "[contenteditable='true']"
+    video_upload:
+      - "input[type='file']"
+    cover_upload:
+      - "input[type='file'][accept*='image']"
+      - "input[type='file'][accept*='png']"
+      - "input[type='file'][accept*='jpg']"
+    publish_modal_confirm:
+      - "div[role='modal'] button:has-text('继续发布')"
+      - "div[role='modal'] button:has-text('确认发布')"
+      - "div[role='modal'] button:has-text('确定')"
+      - "div[role='modal'] button:has-text('继续')"
+      - "div[role='modal'] button:has-text('知道了')"
+      - "div[role='modal'] button:has-text('我知道了')"
+    publish_modal_close:
+      - "div[role='modal'] .semi-modal-close"
+      - "div[role='modal'] button:has-text('取消')"
+    publish_button:
+      - "button:text-is('发布')"
+
+kuaishou:
+  publish_url: "https://cp.kuaishou.com/article/publish/video"
+  option_controls:
+    visibility:
+      kind: choice
+      activate:
+        - "button:has-text('可见范围')"
+        - "div:has-text('可见范围')"
+      options:
+        public:
+          - "div:text-is('公开')"
+          - "label:has-text('公开')"
+        private:
+          - "div:text-is('仅自己可见')"
+          - "label:has-text('仅自己可见')"
+    allow_comment:
+      kind: boolean
+      selectors:
+        - "[role='switch'][aria-label*='评论']"
+        - "[role='switch'][aria-label*='允许评论']"
+      enabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='true']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='true']"
+      disabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='false']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='false']"
+  locators:
+    title: []
+    form_ready:
+      - "button:has-text('发布')"
+      - "div[class*='_button-primary'][class*='_button_']"
+      - "[role='textbox'][aria-multiline='true']"
+      - "div[role='textbox']"
+    dismiss_draft:
+      - "button:has-text('放弃')"
+    upload_entry:
+      - "button:has-text('上传视频')"
+      - "button[class*='_upload-btn_']"
+    description_activate:
+      - "[data-placeholder*='作品描述']"
+      - "[data-placeholder*='描述']"
+      - "[aria-label*='作品描述']"
+      - "[aria-label*='描述']"
+      - "[class*='editor']"
+    description:
+      - "[role='textbox'][aria-multiline='true']"
+      - "div[role='textbox']"
+      - "[aria-label*='作品描述']"
+      - "[aria-label*='描述']"
+      - "[aria-label*='简介']"
+      - "[data-placeholder*='作品描述'] [contenteditable='true']"
+      - "[data-placeholder*='描述'] [contenteditable='true']"
+      - "[class*='editor'] [contenteditable='true']"
+      - "[class*='DraftEditor'] [contenteditable='true']"
+      - "[contenteditable][data-placeholder*='描述']"
+      - "[contenteditable][placeholder*='描述']"
+      - "#work-description-edit"
+      - "[contenteditable]"
+      - "textarea[placeholder*='描述']"
+      - "input[placeholder*='描述']"
+    video_upload:
+      - "input[type='file']"
+    cover_upload:
+      - "input[type='file'][accept*='image']"
+      - "input[type='file'][accept*='png']"
+      - "input[type='file'][accept*='jpg']"
+    publish_button:
+      - "button:has-text('发布')"
+      - "div[class*='_button-primary'][class*='_button_']"
+      - "div:has-text('发布')"
+
+wechat_channels:
+  publish_url: "https://channels.weixin.qq.com/platform/post/create"
+  frame_name: "content"
+  option_controls:
+    declare_original:
+      kind: click
+      selectors:
+        - "label:has-text('声明原创')"
+        - "span:text-is('声明原创')"
+    allow_comment:
+      kind: boolean
+      selectors:
+        - "[role='switch'][aria-label*='评论']"
+        - "[role='switch'][aria-label*='允许评论']"
+      enabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='true']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='true']"
+      disabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='false']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='false']"
+    collection_name:
+      kind: fill
+      activate:
+        - "div:text-is('选择合集')"
+        - "span:text-is('选择合集')"
+        - "button:has-text('合集')"
+        - "div:has-text('合集')"
+      selectors:
+        - "input[placeholder*='搜索合集']"
+        - "input[placeholder*='选择合集']"
+      confirm_selectors:
+        - "div:text-is('{value}')"
+        - "span:text-is('{value}')"
+  locators:
+    title:
+      - "input[placeholder*='概括视频主要内容']"
+      - "input[placeholder*='字数建议6-16个字符']"
+      - "input.weui-desktop-form__input[placeholder*='概括视频主要内容']"
+    description:
+      - "div.input-editor"
+      - "div.input-editor[contenteditable]"
+      - "div.input-editor[data-placeholder*='添加描述']"
+    video_upload:
+      - "input[type='file'][accept*='video/mp4']"
+      - "input[type='file'][accept*='video']"
+      - "input[type='file']"
+    cover_upload:
+      - "input[type='file'][accept*='image']"
+      - "input[type='file'][accept*='png']"
+      - "input[type='file'][accept*='jpg']"
+    publish_button:
+      - "button.weui-desktop-btn.weui-desktop-btn_primary"
+      - "button:has-text('发表')"
+
+xiaohongshu:
+  publish_url: "https://creator.xiaohongshu.com/publish/publish"
+  option_controls:
+    visibility:
+      kind: choice
+      activate:
+        - "button:has-text('谁可以看')"
+        - "div:has-text('谁可以看')"
+      options:
+        public:
+          - "div:text-is('公开')"
+          - "label:has-text('公开')"
+        followers:
+          - "div:text-is('仅粉丝可见')"
+          - "label:has-text('仅粉丝可见')"
+        private:
+          - "div:text-is('仅自己可见')"
+          - "label:has-text('仅自己可见')"
+    allow_comment:
+      kind: boolean
+      selectors:
+        - "[role='switch'][aria-label*='评论']"
+        - "[role='switch'][aria-label*='允许评论']"
+      enabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='true']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='true']"
+      disabled_selectors:
+        - "[role='switch'][aria-label*='评论'][aria-checked='false']"
+        - "[role='switch'][aria-label*='允许评论'][aria-checked='false']"
+    poi_name:
+      kind: fill
+      activate:
+        - "button:has-text('添加地点')"
+        - "span:text-is('添加地点')"
+      selectors:
+        - "input[placeholder*='搜索地点']"
+        - "input[placeholder*='输入地点']"
+      confirm_selectors:
+        - "div:text-is('{value}')"
+        - "span:text-is('{value}')"
+  locators:
+    title:
+      - "input[placeholder*='填写标题']"
+      - "input[placeholder*='标题']"
+    description:
+      - "[contenteditable='true']"
+    video_upload:
+      - "input.upload-input"
+      - "input[type='file']"
+    cover_upload:
+      - "input[type='file'][accept*='image']"
+      - "input[type='file'][accept*='png']"
+      - "input[type='file'][accept*='jpg']"
+    recommended_cover:
+      - ".recommend .defaults > .default:nth-child(2)"
+      - ".recommend .defaults > .default:nth-child(3)"
+      - ".recommend .defaults > .default:nth-child(1)"
+    recommended_cover_applied_text:
+      - "已应用推荐封面"
+    publish_button:
+      - "button:has-text('发布')"
+      - "span:text-is('发布')"

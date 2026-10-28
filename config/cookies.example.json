@@ -1,0 +1,22 @@
+[
+    {
+        "name": "bili_jct",
+        "value": "YOUR_CSRF_TOKEN_HERE",
+        "domain": ".bilibili.com"
+    },
+    {
+        "name": "SESSDATA",
+        "value": "YOUR_SESSDATA_HERE",
+        "domain": ".bilibili.com"
+    },
+    {
+        "name": "__Secure-1PSID",
+        "value": "YOUR_GEMINI_COOKIE_HERE",
+        "domain": ".google.com"
+    },
+    {
+        "name": "__Secure-1PSIDTS",
+        "value": "YOUR_GEMINI_COOKIE_TS_HERE",
+        "domain": ".google.com"
+    }
+]
