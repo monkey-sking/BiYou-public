@@ -1,7 +1,7 @@
 # BiYou: YouTube <-> Bilibili Automation Tool
 
 <!-- badges:start -->
-[![Stars](https://img.shields.io/github/stars/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/stargazers) [![Forks](https://img.shields.io/github/forks/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/network/members) [![Last commit](https://img.shields.io/github/last-commit/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/commits/main)
+[![Stars](https://img.shields.io/github/stars/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/stargazers) [![Forks](https://img.shields.io/github/forks/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/network/members) [![Last commit](https://img.shields.io/github/last-commit/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/commits/main) [![License](https://img.shields.io/github/license/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/blob/main/LICENSE) [![Language](https://img.shields.io/github/languages/top/monkey-sking/BiYou-public?style=flat-square)](https://github.com/monkey-sking/BiYou-public/search?l=)
 <!-- badges:end -->
 
 **[中文文档](README_zh.md)** | English
